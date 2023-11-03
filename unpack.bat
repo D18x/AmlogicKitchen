@@ -82,8 +82,8 @@ goto level
 
 
 :level2
-
-python --version 2>NUL
+rem Tested with Python 3.11.6
+py --version 2>NUL
 if errorlevel 1 (
 echo Error^: Python not installed
 pause
@@ -126,9 +126,9 @@ if !extracttype! EQU 1 (
     if exist level1\%%A.PARTITION (
         bin\windows\file level1\%%A.PARTITION | findstr /C:"sparse">nul && (
             bin\windows\simg2img level1\%%A.PARTITION level2\%%A.img
-            python bin\common\imgextractor.py "level2\%%A.img" "level2"
+            py bin\common\imgextractor.py "level2\%%A.img" "level2"
         ) || (
-            python bin\common\imgextractor.py "level1\%%A.PARTITION" "level2"
+            py bin\common\imgextractor.py "level1\%%A.PARTITION" "level2"
         )
         if exist level1\%%A.raw.img (
             del level1\%%A.raw.img
@@ -151,7 +151,7 @@ if exist level1\super.PARTITION (
     if exist level2\%%A.img (
         call :setsize level2\%%A.img
         if !size! GTR 1024 (
-            python bin\common\imgextractor.py "level2\%%A.img" "level2"
+            py bin\common\imgextractor.py "level2\%%A.img" "level2"
         )
         if exist level2\config\%%A_file_contexts (
             bin\windows\sed -n "G; s/\n/&&/; /^\([ -~]*\n\).*\n\1/d; s/\n//; h; P" level2\config\%%A_file_contexts > level2\config\%%A_sorted_file_contexts
